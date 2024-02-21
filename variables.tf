@@ -6,22 +6,10 @@ variable "name" {
   description = "Name  (e.g. `app` or `cluster`)."
 }
 
-variable "application" {
-  type        = string
-  default     = ""
-  description = "Application (e.g. `cd` or `opsstation`)."
-}
-
 variable "environment" {
   type        = string
   default     = ""
   description = "Environment (e.g. `prod`, `dev`, `staging`)."
-}
-
-variable "tags" {
-  type        = map(any)
-  default     = {}
-  description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)."
 }
 
 variable "managedby" {
@@ -49,12 +37,6 @@ variable "enabled" {
   description = "Flag to control the module creation."
 }
 
-variable "machine_count" {
-  type        = number
-  default     = 0
-  description = "Number of Virtual Machines to create."
-}
-
 variable "resource_group_name" {
   type        = string
   default     = ""
@@ -65,30 +47,6 @@ variable "location" {
   type        = string
   default     = ""
   description = "Location where resource should be created."
-}
-
-variable "create" {
-  type        = string
-  default     = "60m"
-  description = "Used when creating the Resource Group."
-}
-
-variable "update" {
-  type        = string
-  default     = "60m"
-  description = "Used when updating the Resource Group."
-}
-
-variable "read" {
-  type        = string
-  default     = "5m"
-  description = "Used when retrieving the Resource Group."
-}
-
-variable "delete" {
-  type        = string
-  default     = "60m"
-  description = "Used when deleting the Resource Group."
 }
 
 # Data Factory
@@ -112,37 +70,17 @@ variable "identity_type" {
   default     = "SystemAssigned"
 }
 
-variable "identity_ids" {
-  description = "Specifies a list of User Assigned Managed Identity IDs to be assigned to this Storage Account."
-  type        = list(string)
-  default     = null
-}
 variable "key_vault_id" {
   type    = string
   default = null
 }
-variable "principal_id" {
-  type        = list(string)
-  default     = []
-  description = " The ID of the Principal (User, Group or Service Principal) to assign the Role Definition to. Changing this forces a new resource to be created."
-}
+
 variable "cmk_encryption_enabled" {
   type    = bool
   default = false
 }
-variable "shared_access_key_enabled" {
-  type        = bool
-  default     = true
-  description = " Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active Directory (Azure AD). The default value is true."
-}
 
 # Private endpoint
-
-variable "virtual_network_id" {
-  type        = string
-  default     = ""
-  description = "The name of the virtual network"
-}
 
 variable "subnet_id" {
   type        = string

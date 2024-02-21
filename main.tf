@@ -46,7 +46,7 @@ resource "azurerm_data_factory" "factory" {
     for_each = var.identity_type != null ? [1] : []
     content {
       type         = var.identity_type
-      identity_ids = var.identity_type == "UserAssigned" ? [join("", azurerm_user_assigned_identity.identity.*.id)] : null
+      identity_ids = var.identity_type == "UserAssigned" ? [join("", azurerm_user_assigned_identity.identity[*].id)] : null
     }
   }
 }
@@ -61,7 +61,7 @@ resource "azurerm_user_assigned_identity" "identity" {
 resource "azurerm_role_assignment" "identity_assigned" {
   depends_on           = [azurerm_user_assigned_identity.identity]
   count                = var.enabled && var.cmk_encryption_enabled ? 1 : 0
-  principal_id         = join("", azurerm_user_assigned_identity.identity.*.principal_id)
+  principal_id         = join("", azurerm_user_assigned_identity.identity[*].principal_id)
   scope                = var.key_vault_id
   role_definition_name = "Key Vault Crypto Service Encryption User"
 }
@@ -114,7 +114,7 @@ locals {
 
 data "azurerm_private_endpoint_connection" "private-ip-0" {
   count               = var.enabled && var.enable_private_endpoint && var.cmk_encryption_enabled ? 1 : 0
-  name                = join("", azurerm_private_endpoint.pep.*.name)
+  name                = join("", azurerm_private_endpoint.pep[*].name)
   resource_group_name = local.resource_group_name
   depends_on          = [azurerm_data_factory.factory]
 }
@@ -132,7 +132,7 @@ resource "azurerm_private_dns_a_record" "arecord" {
   zone_name           = local.private_dns_zone_name
   resource_group_name = local.valid_rg_name
   ttl                 = 3600
-  records             = [data.azurerm_private_endpoint_connection.private-ip-0.0.private_service_connection.0.private_ip_address]
+  records             = [data.azurerm_private_endpoint_connection.private-ip-0[*].private_service_connection[*].private_ip_address]
   tags                = module.labels.tags
   lifecycle {
     ignore_changes = [
