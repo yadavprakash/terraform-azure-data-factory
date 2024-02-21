@@ -1,6 +1,6 @@
-# Terraform-azure-virtual-machine
+# Terraform-azure-data-factory
 
-# Terraform Azure Cloud Virtual-Machine Module
+# Terraform Azure Cloud DATA FACTORY Module
 
 ## Table of Contents
 - [Introduction](#introduction)
